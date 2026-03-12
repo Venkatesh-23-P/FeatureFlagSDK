@@ -18,7 +18,9 @@ jobs:
 
       - name: Import GPG Key
         run: |
-          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --import
+          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
+        env:
+          GPG_TTY: /dev/tty
 
       - name: Publish to Maven Central
         run: ./gradlew :featureflagsdk:publishReleasePublicationToMavenRepository

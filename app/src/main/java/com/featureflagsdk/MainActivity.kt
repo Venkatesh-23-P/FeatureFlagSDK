@@ -12,15 +12,25 @@ import com.featureflagsdk.sdk.FeatureSDK
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        println("FeatureSDK: App Started")
 
         FeatureSDK.initialize(
             context = this,
-            apiUrl = "https://unmeteorologic-subsumable-cami.ngrok-free.dev/api/hospitals/list?pageNumber=1&latitude=13.0893502&longitude=80.241408&searchName=&pageSize=20&userId=876305c4-57b5-4886-b303-b07bf6bbbbe7"
+            apiUrl = "https://jsonplaceholder.typicode.com/todos/1",
+            onReady = {
+                val completed = FeatureSDK.getBool("completed")
+                println("FeatureSDK: Bool Value (completed) -> $completed")
+
+                val userId = FeatureSDK.getInt("userId")
+                println("FeatureSDK: Int Value (userId) -> $userId")
+
+                val title = FeatureSDK.getString("title")
+                println("FeatureSDK: String Value (title) -> $title")
+
+                val id = FeatureSDK.getInt("id")
+                println("FeatureSDK: Int Value (id) -> $id")
+            }
         )
-
-        val value = FeatureSDK.getBool("success")
-
-        println("Feature value: $value")
     }
 }
 

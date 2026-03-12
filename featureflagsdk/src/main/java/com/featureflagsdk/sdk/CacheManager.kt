@@ -2,7 +2,7 @@ package com.featureflagsdk.sdk
 
 import android.content.Context
 import android.content.SharedPreferences
-import org.json.JSONObject
+import androidx.core.content.edit
 
 class CacheManager(context: Context) {
 
@@ -10,14 +10,18 @@ class CacheManager(context: Context) {
         context.getSharedPreferences("feature_sdk_cache", Context.MODE_PRIVATE)
 
     fun saveConfig(json: String) {
-        prefs.edit().putString("config_json", json).apply()
+        prefs.edit { putString("config_json", json) }
+        println("FeatureSDK: Config saved to cache")
     }
 
     fun getConfig(): String? {
-        return prefs.getString("config_json", null)
+        val cached = prefs.getString("config_json", null)
+        println("FeatureSDK: Cache ${if (cached != null) "hit" else "miss"}")
+        return cached
     }
 
     fun clear() {
-        prefs.edit().clear().apply()
+        prefs.edit { clear() }
+        println("FeatureSDK: Cache cleared")
     }
 }

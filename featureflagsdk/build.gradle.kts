@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     id("maven-publish")
+    id("signing")
 }
 
 android {
@@ -37,7 +38,6 @@ android {
             withSourcesJar()
         }
     }
-
 }
 
 dependencies {
@@ -56,10 +56,47 @@ afterEvaluate {
         publications {
             create<MavenPublication>("release") {
                 from(components["release"])
-                groupId = "com.github.Venkatesh"
-                artifactId = "FeatureFlagSDK"
-                version = "1.0.0"
+
+                groupId    = "io.github.Venkatesh-23-P"
+                artifactId = "featureflagsdk"
+                version    = "1.0.0"
+
+                pom {
+                    name.set("FeatureSDK")
+                    description.set("Feature Flag SDK for Android")
+                    url.set("https://github.com/Venkatesh-23-P/featureflagsdk")
+
+                    licenses {
+                        license {
+                            name.set("MIT License")
+                            url.set("https://opensource.org/licenses/MIT")
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set("Venkatesh-23-P")
+                            name.set("Venkatesh")
+                        }
+                    }
+                    scm {
+                        url.set("https://github.com/Venkatesh-23-P/featureflagsdk")
+                    }
+                }
             }
         }
+
+        repositories {
+            maven {
+                url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                credentials {
+                    username = project.findProperty("ossrhUsername") as String?
+                    password = project.findProperty("ossrhPassword") as String?
+                }
+            }
+        }
+    }
+
+    signing {
+        sign(publishing.publications["release"])
     }
 }
